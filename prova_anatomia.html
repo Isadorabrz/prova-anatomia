@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Prova Prática - Anatomia</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+        text-align: center;
+        color: #2d3748;
+        margin-bottom: 30px;
+        font-size: 2em;
+    }
+    
+    .menu-inicial {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+    
+    button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    button:active {
+        transform: translateY(0);
+    }
+    
+    .info-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f7fafc;
+        border-radius: 10px;
+    }
+    
+    #timer {
+        font-size: 32px;
+        font-weight: bold;
+        color: #e53e3e;
+    }
+    
+    #questao-numero {
+        font-size: 18px;
+        color: #4a5568;
+        font-weight: bold;
+    }
+    
+    .imagem-container {
+        text-align: center;
+        margin: 30px 0;
+        padding: 20px;
+        background: #f7fafc;
+        border-radius: 10px;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+        max-height: 400px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+        margin: 15px 0;
+    }
+    
+    textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+    
+    .multipla-opcoes {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .multipla-opcoes button {
+        background: white;
+        color: #2d3748;
+        border: 2px solid #e2e8f0;
+        text-align: left;
+        padding: 15px 20px;
+        font-weight: normal;
+    }
+    
+    .multipla-opcoes button:hover {
+        border-color: #667eea;
+        background: #f7fafc;
+    }
+    
+    #feedback {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .feedback-correto {
+        background: #c6f6d5;
+        color: #22543d;
+    }
+    
+    .feedback-errado {
+        background: #fed7d7;
+        color: #742a2a;
+    }
+    
+    .hidden { display: none; }
+    
+    .btn-acao {
+        background: #48bb78;
+        margin-top: 15px;
+    }
+    
+    .btn-acao:hover {
+        background: #38a169;
+    }
+    
+    .btn-proxima {
+        background: #4299e1;
+    }
+    
+    .btn-proxima:hover {
+        background: #3182ce;
+    }
+    
+    .instrucao {
+        font-size: 18px;
+        color: #4a5568;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🦴 Simulador de Prova Prática - Anatomia</h1>
+
+    <div id="menu-inicial" class="menu-inicial">
+        <button onclick="iniciarProva('discursiva')">📝 Modo Discursivo</button>
+        <button onclick="iniciarProva('multipla')">✅ Múltipla Escolha</button>
+    </div>
+
+    <div id="prova-container" class="hidden">
+        <div class="info-panel">
+            <div id="questao-numero">Questão 1/10</div>
+            <div id="timer">40</div>
+        </div>
+
+        <div class="imagem-container">
+            <img id="imagem" src="" alt="Peça anatômica">
+        </div>
+
+        <div id="discursiva" class="hidden">
+            <p class="instrucao">Descreva a estrutura anatômica apresentada:</p>
+            <textarea id="resposta" placeholder="Digite sua resposta aqui..."></textarea><br>
+            <button class="btn-acao" onclick="corrigirDiscursiva()">Corrigir</button>
+        </div>
+
+        <div id="multipla" class="hidden">
+            <p class="instrucao">Identifique a estrutura anatômica:</p>
+            <div class="multipla-opcoes" id="opcoes-container"></div>
+        </div>
+
+        <div id="feedback"></div>
+        <button id="btn-proxima" class="hidden btn-proxima" onclick="proximaQuestao()">Próxima Questão →</button>
+    </div>
+</div>
+
+<script>
+const questoes = [
+    {
+        imagem: "https://storage.googleapis.com/dev_resources_voka_io_303011/3d-atlas/Systemic/Bones%20of%20Free%20Part%20of%20Lower%20Limb/3D%20Model%20of%20Tibia%20(Left).webp",
+        resposta: "Tíbia esquerda, vista anterior",
+        palavrasChave: ["tibia", "tíbia", "esquerda", "anterior", "tuberosidade"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Fêmur direito, vista anterior",
+            "B) Tíbia esquerda, vista anterior",
+            "C) Fíbula direita, vista lateral",
+            "D) Úmero esquerdo, vista anterior"
+        ],
+        correta: 1
+    },
+    {
+        imagem: "https://thumbs.dreamstime.com/b/osso-do-f%C3%AAmur-humano-direito-vista-anterior-fundo-preto-renderiza%C3%A7%C3%A3o-d-em-ilustra%C3%A7%C3%A3o-200111899.jpg",
+        resposta: "Fêmur direito, vista anterior",
+        palavrasChave: ["femur", "fêmur", "direito", "anterior", "cabeça"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Tíbia direita, vista anterior",
+            "B) Úmero direito, vista lateral",
+            "C) Fêmur direito, vista anterior",
+            "D) Fêmur esquerdo, vista posterior"
+        ],
+        correta: 2
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Gray207.png/400px-Gray207.png",
+        resposta: "Úmero direito, vista anterior",
+        palavrasChave: ["umero", "úmero", "direito", "anterior", "cabeça"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Rádio direito, vista anterior",
+            "B) Úmero esquerdo, vista posterior",
+            "C) Úmero direito, vista anterior",
+            "D) Fêmur direito, vista lateral"
+        ],
+        correta: 2
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Gray214.png/300px-Gray214.png",
+        resposta: "Rádio direito, vista anterior",
+        palavrasChave: ["radio", "rádio", "direito", "anterior", "cabeça"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Ulna direita, vista anterior",
+            "B) Rádio esquerdo, vista posterior",
+            "C) Rádio direito, vista anterior",
+            "D) Úmero direito, vista lateral"
+        ],
+        correta: 2
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gray213.png/300px-Gray213.png",
+        resposta: "Ulna direita, vista anterior",
+        palavrasChave: ["ulna", "direita", "anterior", "olecrano", "olécrano"],
+        pontosPalavra: [3, 2, 2, 3, 3],
+        alternativas: [
+            "A) Rádio direito, vista anterior",
+            "B) Ulna direita, vista anterior",
+            "C) Fíbula direita, vista lateral",
+            "D) Ulna esquerda, vista posterior"
+        ],
+        correta: 1
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gray258.png/400px-Gray258.png",
+        resposta: "Fíbula direita, vista anterior",
+        palavrasChave: ["fibula", "fíbula", "direita", "anterior", "cabeça"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Tíbia direita, vista lateral",
+            "B) Fíbula esquerda, vista anterior",
+            "C) Fíbula direita, vista anterior",
+            "D) Ulna direita, vista posterior"
+        ],
+        correta: 2
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Carpus.png/500px-Carpus.png",
+        resposta: "Ossos do carpo, vista palmar",
+        palavrasChave: ["carpo", "punho", "palmar", "anterior", "escafoide"],
+        pontosPalavra: [3, 3, 2, 2, 3],
+        alternativas: [
+            "A) Ossos do tarso, vista plantar",
+            "B) Ossos do carpo, vista palmar",
+            "C) Falanges da mão, vista dorsal",
+            "D) Metacarpos, vista lateral"
+        ],
+        correta: 1
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Sobo_1909_633.png/500px-Sobo_1909_633.png",
+        resposta: "Coluna vertebral, vista lateral",
+        palavrasChave: ["coluna", "vertebral", "lateral", "cervical", "lombar"],
+        pontosPalavra: [3, 3, 2, 2, 2],
+        alternativas: [
+            "A) Costelas, vista anterior",
+            "B) Coluna vertebral, vista lateral",
+            "C) Esterno, vista anterior",
+            "D) Sacro, vista posterior"
+        ],
+        correta: 1
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Gray190.png/400px-Gray190.png",
+        resposta: "Escápula direita, face costal (anterior)",
+        palavrasChave: ["escapula", "escápula", "direita", "costal", "anterior"],
+        pontosPalavra: [3, 3, 2, 2, 2],
+        alternativas: [
+            "A) Escápula esquerda, face posterior",
+            "B) Clavícula direita, vista superior",
+            "C) Escápula direita, face costal",
+            "D) Ílio direito, face medial"
+        ],
+        correta: 2
+    },
+    {
+        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Gray241.png/400px-Gray241.png",
+        resposta: "Osso do quadril direito, vista lateral",
+        palavrasChave: ["quadril", "iliaco", "ilíaco", "direito", "lateral", "acetabulo", "acetábulo"],
+        pontosPalavra: [3, 3, 3, 2, 2, 3, 3],
+        alternativas: [
+            "A) Sacro, vista anterior",
+            "B) Osso do quadril esquerdo, vista medial",
+            "C) Osso do quadril direito, vista lateral",
+            "D) Fêmur direito, vista proximal"
+        ],
+        correta: 2
+    }
+];
+
+let modoAtual = '';
+let questaoAtual = 0;
+let tempo = 40;
+let timer;
+let acertos = 0;
+
+function iniciarProva(modo) {
+    modoAtual = modo;
+    questaoAtual = 0;
+    acertos = 0;
+    
+    document.getElementById('menu-inicial').classList.add('hidden');
+    document.getElementById('prova-container').classList.remove('hidden');
+    
+    if (modo === 'discursiva') {
+        document.getElementById('discursiva').classList.remove('hidden');
+        document.getElementById('multipla').classList.add('hidden');
+    } else {
+        document.getElementById('multipla').classList.remove('hidden');
+        document.getElementById('discursiva').classList.add('hidden');
+    }
+    
+    carregarQuestao();
+}
+
+function carregarQuestao() {
+    if (questaoAtual >= questoes.length) {
+        finalizarProva();
+        return;
+    }
+    
+    const questao = questoes[questaoAtual];
+    
+    document.getElementById('questao-numero').innerText = `Questão ${questaoAtual + 1}/${questoes.length}`;
+    document.getElementById('imagem').src = questao.imagem;
+    document.getElementById('feedback').innerHTML = '';
+    document.getElementById('feedback').className = '';
+    document.getElementById('btn-proxima').classList.add('hidden');
+    
+    if (modoAtual === 'discursiva') {
+        document.getElementById('resposta').value = '';
+    } else {
+        const opcoesContainer = document.getElementById('opcoes-container');
+        opcoesContainer.innerHTML = '';
+        questao.alternativas.forEach((alt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = alt;
+            btn.onclick = () => responderMultipla(index);
+            opcoesContainer.appendChild(btn);
+        });
+    }
+    
+    iniciarTimer();
+}
+
+function iniciarTimer() {
+    clearInterval(timer);
+    tempo = 40;
+    document.getElementById('timer').innerText = tempo;
+    
+    timer = setInterval(() => {
+        tempo--;
+        document.getElementById('timer').innerText = tempo;
+        
+        if (tempo <= 10) {
+            document.getElementById('timer').style.color = '#e53e3e';
+        }
+        
+        if (tempo <= 0) {
+            clearInterval(timer);
+            if (modoAtual === 'discursiva') {
+                corrigirDiscursiva();
+            } else {
+                mostrarFeedback(false, `⏱️ Tempo esgotado!<br><br>Resposta correta: ${questoes[questaoAtual].alternativas[questoes[questaoAtual].correta]}`);
+            }
+        }
+    }, 1000);
+}
+
+function corrigirDiscursiva() {
+    clearInterval(timer);
+    
+    const questao = questoes[questaoAtual];
+    const resposta = document.getElementById('resposta').value.toLowerCase();
+    
+    let pontos = 0;
+    questao.palavrasChave.forEach((palavra, index) => {
+        if (resposta.includes(palavra.toLowerCase())) {
+            pontos += questao.pontosPalavra[index];
+        }
+    });
+    
+    const notaFinal = Math.min(pontos, 10);
+    const passou = notaFinal >= 6;
+    
+    if (passou) acertos++;
+    
+    const feedback = `
+        <strong>Nota: ${notaFinal}/10</strong><br><br>
+        Gabarito: ${questao.resposta}<br><br>
+        ${passou ? '✅ Aprovado!' : '❌ Revise este conteúdo!'}
+    `;
+    
+    mostrarFeedback(passou, feedback);
+}
+
+function responderMultipla(opcaoEscolhida) {
+    clearInterval(timer);
+    
+    const questao = questoes[questaoAtual];
+    const correto = opcaoEscolhida === questao.correta;
+    
+    if (correto) acertos++;
+    
+    const feedback = correto 
+        ? `✅ <strong>Correto!</strong><br><br>${questao.resposta}`
+        : `❌ <strong>Incorreto!</strong><br><br>Resposta correta: ${questao.alternativas[questao.correta]}<br>${questao.resposta}`;
+    
+    mostrarFeedback(correto, feedback);
+}
+
+function mostrarFeedback(correto, mensagem) {
+    const feedbackDiv = document.getElementById('feedback');
+    feedbackDiv.innerHTML = mensagem;
+    feedbackDiv.className = correto ? 'feedback-correto' : 'feedback-errado';
+    document.getElementById('btn-proxima').classList.remove('hidden');
+}
+
+function proximaQuestao() {
+    questaoAtual++;
+    carregarQuestao();
+}
+
+function finalizarProva() {
+    clearInterval(timer);
+    
+    const porcentagem = (acertos / questoes.length * 100).toFixed(1);
+    const passou = porcentagem >= 60;
+    
+    document.getElementById('prova-container').innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">
+                ${passou ? '🎉' : '📚'} Prova Finalizada!
+            </h2>
+            <div style="font-size: 4em; font-weight: bold; color: ${passou ? '#38a169' : '#e53e3e'}; margin: 30px 0;">
+                ${acertos}/${questoes.length}
+            </div>
+            <div style="font-size: 1.8em; margin-bottom: 30px;">
+                ${porcentagem}% de aproveitamento
+            </div>
+            <div style="font-size: 1.2em; color: #4a5568; margin-bottom: 40px;">
+                ${passou ? '✅ Aprovado! Parabéns!' : '❌ Continue estudando!'}
+            </div>
+            <button onclick="location.reload()" style="font-size: 18px;">
+                🔄 Nova Prova
+            </button>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
