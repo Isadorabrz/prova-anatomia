@@ -198,7 +198,8 @@
         </div>
 
         <div class="imagem-container">
-            <img id="imagem" src="" alt="Peça anatômica">
+            <canvas id="canvas-img" style="max-width:100%;max-height:340px;display:block;margin:0 auto;border-radius:10px;"></canvas>
+onerror="this.style.opacity='0.2'">
         </div>
 
         <div id="discursiva" class="hidden">
@@ -219,136 +220,703 @@
 
 <script>
 const questoes = [
-    {
-        imagem: "https://storage.googleapis.com/dev_resources_voka_io_303011/3d-atlas/Systemic/Bones%20of%20Free%20Part%20of%20Lower%20Limb/3D%20Model%20of%20Tibia%20(Left).webp",
-        resposta: "Tíbia esquerda, vista anterior",
-        palavrasChave: ["tibia", "tíbia", "esquerda", "anterior", "tuberosidade"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Fêmur direito, vista anterior",
-            "B) Tíbia esquerda, vista anterior",
-            "C) Fíbula direita, vista lateral",
-            "D) Úmero esquerdo, vista anterior"
-        ],
-        correta: 1
-    },
-    {
-        imagem: "https://thumbs.dreamstime.com/b/osso-do-f%C3%AAmur-humano-direito-vista-anterior-fundo-preto-renderiza%C3%A7%C3%A3o-d-em-ilustra%C3%A7%C3%A3o-200111899.jpg",
-        resposta: "Fêmur direito, vista anterior",
-        palavrasChave: ["femur", "fêmur", "direito", "anterior", "cabeça"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Tíbia direita, vista anterior",
-            "B) Úmero direito, vista lateral",
-            "C) Fêmur direito, vista anterior",
-            "D) Fêmur esquerdo, vista posterior"
-        ],
-        correta: 2
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Gray207.png/400px-Gray207.png",
-        resposta: "Úmero direito, vista anterior",
-        palavrasChave: ["umero", "úmero", "direito", "anterior", "cabeça"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Rádio direito, vista anterior",
-            "B) Úmero esquerdo, vista posterior",
-            "C) Úmero direito, vista anterior",
-            "D) Fêmur direito, vista lateral"
-        ],
-        correta: 2
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Gray214.png/300px-Gray214.png",
-        resposta: "Rádio direito, vista anterior",
-        palavrasChave: ["radio", "rádio", "direito", "anterior", "cabeça"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Ulna direita, vista anterior",
-            "B) Rádio esquerdo, vista posterior",
-            "C) Rádio direito, vista anterior",
-            "D) Úmero direito, vista lateral"
-        ],
-        correta: 2
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gray213.png/300px-Gray213.png",
-        resposta: "Ulna direita, vista anterior",
-        palavrasChave: ["ulna", "direita", "anterior", "olecrano", "olécrano"],
-        pontosPalavra: [3, 2, 2, 3, 3],
-        alternativas: [
-            "A) Rádio direito, vista anterior",
-            "B) Ulna direita, vista anterior",
-            "C) Fíbula direita, vista lateral",
-            "D) Ulna esquerda, vista posterior"
-        ],
-        correta: 1
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Gray258.png/400px-Gray258.png",
-        resposta: "Fíbula direita, vista anterior",
-        palavrasChave: ["fibula", "fíbula", "direita", "anterior", "cabeça"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Tíbia direita, vista lateral",
-            "B) Fíbula esquerda, vista anterior",
-            "C) Fíbula direita, vista anterior",
-            "D) Ulna direita, vista posterior"
-        ],
-        correta: 2
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Carpus.png/500px-Carpus.png",
-        resposta: "Ossos do carpo, vista palmar",
-        palavrasChave: ["carpo", "punho", "palmar", "anterior", "escafoide"],
-        pontosPalavra: [3, 3, 2, 2, 3],
-        alternativas: [
-            "A) Ossos do tarso, vista plantar",
-            "B) Ossos do carpo, vista palmar",
-            "C) Falanges da mão, vista dorsal",
-            "D) Metacarpos, vista lateral"
-        ],
-        correta: 1
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Sobo_1909_633.png/500px-Sobo_1909_633.png",
-        resposta: "Coluna vertebral, vista lateral",
-        palavrasChave: ["coluna", "vertebral", "lateral", "cervical", "lombar"],
-        pontosPalavra: [3, 3, 2, 2, 2],
-        alternativas: [
-            "A) Costelas, vista anterior",
-            "B) Coluna vertebral, vista lateral",
-            "C) Esterno, vista anterior",
-            "D) Sacro, vista posterior"
-        ],
-        correta: 1
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Gray190.png/400px-Gray190.png",
-        resposta: "Escápula direita, face costal (anterior)",
-        palavrasChave: ["escapula", "escápula", "direita", "costal", "anterior"],
-        pontosPalavra: [3, 3, 2, 2, 2],
-        alternativas: [
-            "A) Escápula esquerda, face posterior",
-            "B) Clavícula direita, vista superior",
-            "C) Escápula direita, face costal",
-            "D) Ílio direito, face medial"
-        ],
-        correta: 2
-    },
-    {
-        imagem: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Gray241.png/400px-Gray241.png",
-        resposta: "Osso do quadril direito, vista lateral",
-        palavrasChave: ["quadril", "iliaco", "ilíaco", "direito", "lateral", "acetabulo", "acetábulo"],
-        pontosPalavra: [3, 3, 3, 2, 2, 3, 3],
-        alternativas: [
-            "A) Sacro, vista anterior",
-            "B) Osso do quadril esquerdo, vista medial",
-            "C) Osso do quadril direito, vista lateral",
-            "D) Fêmur direito, vista proximal"
-        ],
-        correta: 2
-    }
+
+{ 
+imagem:"imgs/tibia.png",
+resposta:"Tíbia",
+palavrasChave:["tibia","tíbia","anterior"],
+pontosPalavra:[3,3,2],
+alternativas:["Fêmur","Tíbia","Fíbula","Úmero"],
+correta:1,
+seta:{x:0.50, y:0.45}
+},
+
+{ 
+imagem:"imgs/femur.png",
+resposta:"Fêmur",
+palavrasChave:["femur","fêmur","cabeça"],
+pontosPalavra:[3,3,2],
+alternativas:["Tíbia","Fêmur","Úmero","Rádio"],
+correta:1,
+seta:{x:0.55, y:0.10}
+},
+
+{ 
+imagem:"imgs/pelve_ant.png",
+resposta:"Acetábulo",
+palavrasChave:["acetabulo","acetábulo","pelve"],
+pontosPalavra:[3,3,2],
+alternativas:["Sacro","Acetábulo","Ísquio","Púbis"],
+correta:1,
+seta:{x:0.42, y:0.60}
+},
+
+{ 
+imagem:"imgs/joelho_lig.png",
+resposta:"Ligamento cruzado anterior",
+palavrasChave:["lca","joelho","anterior"],
+pontosPalavra:[3,3,2],
+alternativas:["LCP","LCA","Menisco","Patelar"],
+correta:1,
+seta:{x:0.58, y:0.46}
+},
+
+{
+ imagem:"imgs/glenoumeral.png",
+resposta:"Supraespinal",
+palavrasChave:["supraespinal","abducao"],
+pontosPalavra:[3,2],
+alternativas:["Deltoide","Supraespinal","Trapézio","Peitoral"],
+correta:1,
+seta:{x:0.25, y:0.08}
+},
+
+{
+ imagem:"imgs/musc_glut_lat.png",
+resposta:"Glúteo médio",
+palavrasChave:["gluteo","medio"],
+pontosPalavra:[3,2],
+alternativas:["Glúteo máximo","Glúteo médio","Iliopsoas","Adutor"],
+correta:1,
+seta:{x:0.72, y:0.12}
+},
+
+{
+ imagem:"imgs/musc_inf_ant.png",
+resposta:"Iliopsoas",
+palavrasChave:["iliopsoas","flexao"],
+pontosPalavra:[3,2],
+alternativas:["Glúteo","Iliopsoas","Bíceps","Sartório"],
+correta:1,
+seta:{x:0.40, y:0.17}
+},
+
+{
+ imagem:"imgs/torso_ant.png",
+resposta:"Serrátil anterior",
+palavrasChave:["serrati","escapula"],
+pontosPalavra:[3,2],
+alternativas:["Trapézio","Serrátil","Romboide","Deltoide"],
+correta:1,
+seta:{x:0.22, y:0.58}
+},
+
+{
+ imagem:"imgs/glenoumeral.png",
+resposta:"Articulação glenoumeral",
+palavrasChave:["ombro","gleno"],
+pontosPalavra:[3,2],
+alternativas:["Cotovelo","Glenoumeral","Punho","Escápula"],
+correta:1,
+seta:{x:0.22, y:0.38}
+},
+
+{ 
+imagem:"imgs/musc_coxa_post.png",
+resposta:"Glúteo máximo",
+palavrasChave:["gluteo","extensao"],
+pontosPalavra:[3,2],
+alternativas:["Glúteo médio","Glúteo máximo","Tensor","Adutor"],
+correta:1,
+seta:{x:0.50, y:0.18}
+},
+
+
+{ 
+imagem:"imgs/musc_sup_post.png",
+resposta:"Tríceps braquial",
+palavrasChave:["triceps","extensao"],
+pontosPalavra:[3,2],
+alternativas:["Bíceps","Tríceps","Braquial","Ancôneo"],
+correta:1,
+seta:{x:0.50, y:0.48}
+},
+
+{ imagem:"imgs/glenoumeral.png",
+resposta:"Infraespinal",
+palavrasChave:["infraespinal","rotacao"],
+pontosPalavra:[3,2],
+alternativas:["Supra","Infra","Deltoide","Trapézio"],
+correta:1,
+seta:{x:0.22, y:0.35}
+},
+
+{
+ imagem:"imgs/femur.png",
+resposta:"Colo do fêmur",
+palavrasChave:["colo","femur"],
+pontosPalavra:[3,2],
+alternativas:["Cabeça","Colo","Trocânter","Diáfise"],
+correta:1,
+seta:{x:0.60, y:0.17}
+},
+
+{ 
+imagem:"imgs/joelho_lig.png",
+resposta:"Menisco medial",
+palavrasChave:["menisco","medial"],
+pontosPalavra:[3,2],
+alternativas:["LCA","Menisco medial","LCP","Patela"],
+correta:1,
+seta:{x:0.58, y:0.46}
+},
+
+{ 
+imagem:"imgs/musc_sup_ant.png",
+resposta:"Bíceps braquial",
+palavrasChave:["biceps","flexao"],
+pontosPalavra:[3,2],
+alternativas:["Bíceps","Tríceps","Braquial","Deltoide"],
+correta:0,
+seta:{x:0.22, y:0.10}
+},
+
+{
+ imagem:"imgs/musc_sup_ant.png",
+resposta:"Deltoide",
+palavrasChave:["deltoide","ombro"],
+pontosPalavra:[3,2],
+alternativas:["Trapézio","Deltoide","Peitoral","Romboide"],
+correta:1,
+seta:{x:0.22, y:0.10}
+},
+
+{
+ imagem:"imgs/patela.png",
+resposta:"Patela",
+palavrasChave:["patela","joelho"],
+pontosPalavra:[3,2],
+alternativas:["Fíbula","Patela","Tíbia","Fêmur"],
+correta:1,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/escapula_ant.png",
+resposta:"Escápula",
+palavrasChave:["escapula","ombro"],
+pontosPalavra:[3,2],
+alternativas:["Clavícula","Escápula","Úmero","Esterno"],
+correta:1,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/umero.png",
+resposta:"Úmero",
+palavrasChave:["umero","úmero"],
+pontosPalavra:[3,3],
+alternativas:["Rádio","Úmero","Ulna","Clavícula"],
+correta:1,
+seta:{x:0.50, y:0.12}
+},
+
+{
+ imagem:"imgs/radio.png",
+resposta:"Rádio",
+palavrasChave:["radio","rádio"],
+pontosPalavra:[3,3],
+alternativas:["Ulna","Rádio","Úmero","Fíbula"],
+correta:1,
+seta:{x:0.50, y:0.45}
+},
+
+
+{
+ imagem:"imgs/ulna.png",
+resposta:"Ulna",
+palavrasChave:["ulna"],
+pontosPalavra:[3],
+alternativas:["Ulna","Rádio","Úmero","Clavícula"],
+correta:0,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/fibula.png",
+resposta:"Fíbula",
+palavrasChave:["fibula","fíbula"],
+pontosPalavra:[3,3],
+alternativas:["Tíbia","Fíbula","Fêmur","Patela"],
+correta:1,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/clavicula.png",
+resposta:"Clavícula",
+palavrasChave:["clavicula","clavícula"],
+pontosPalavra:[3,3],
+alternativas:["Escápula","Clavícula","Úmero","Esterno"],
+correta:1,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/torax_ant.png",
+resposta:"Esterno",
+palavrasChave:["esterno"],
+pontosPalavra:[3],
+alternativas:["Esterno","Costela","Clavícula","Escápula"],
+correta:0,
+seta:{x:0.38, y:0.55}
+},
+
+{ 
+imagem:"imgs/costelas.png",
+resposta:"Costelas",
+palavrasChave:["costela"],
+pontosPalavra:[3],
+alternativas:["Costelas","Esterno","Clavícula","Escápula"],
+correta:0,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/vertebra.png",
+resposta:"Vértebra",
+palavrasChave:["vertebra"],
+pontosPalavra:[3],
+alternativas:["Vértebra","Costela","Escápula","Esterno"],
+correta:0,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/sacro_coluna.png",
+resposta:"Sacro",
+palavrasChave:["sacro"],
+pontosPalavra:[3],
+alternativas:["Sacro","Ílio","Púbis","Ísquio"],
+correta:0,
+seta:{x:0.50, y:0.60}
+},
+
+{ 
+imagem:"imgs/pelve_lat.png",
+resposta:"Pelve",
+palavrasChave:["pelve"],
+pontosPalavra:[3],
+alternativas:["Pelve","Sacro","Fêmur","Coluna"],
+correta:0,
+seta:{x:0.40, y:0.55}
+},
+
+{ 
+imagem:"imgs/pe_plantar.png",
+resposta:"Calcâneo",
+palavrasChave:["calcaneo","calcâneo"],
+pontosPalavra:[3,3],
+alternativas:["Tálus","Calcâneo","Navicular","Cuboide"],
+correta:1,
+seta:{x:0.50, y:0.55}
+},
+
+
+{
+ imagem:"imgs/pe_dorsal.png",
+resposta:"Navicular",
+palavrasChave:["navicular"],
+pontosPalavra:[3],
+alternativas:["Navicular","Cuboide","Tálus","Calcâneo"],
+correta:0,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/pe_dorsal.png",
+resposta:"Cuboide",
+palavrasChave:["cuboide"],
+pontosPalavra:[3],
+alternativas:["Navicular","Cuboide","Tálus","Calcâneo"],
+correta:1,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/pe_dorsal.png",
+resposta:"Metatarso",
+palavrasChave:["metatarso"],
+pontosPalavra:[3],
+alternativas:["Metatarso","Falange","Tarso","Calcâneo"],
+correta:0,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/pe_dorsal.png",
+resposta:"Falanges",
+palavrasChave:["falange"],
+pontosPalavra:[3],
+alternativas:["Falanges","Metatarso","Tarso","Calcâneo"],
+correta:0,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/pelve_lat.png",
+resposta:"ATM",
+palavrasChave:["atm","mandibular"],
+pontosPalavra:[3,2],
+alternativas:["ATM","Cotovelo","Joelho","Punho"],
+correta:0,
+seta:{x:0.40, y:0.55}
+},
+
+{
+ imagem:"imgs/joelho_osso.png",
+resposta:"Articulação do joelho",
+palavrasChave:["joelho"],
+pontosPalavra:[3],
+alternativas:["Joelho","Ombro","Punho","Quadril"],
+correta:0,
+seta:{x:0.50, y:0.50}
+},
+
+{
+ imagem:"imgs/coxofemural.png",
+resposta:"Articulação do quadril",
+palavrasChave:["quadril"],
+pontosPalavra:[3],
+alternativas:["Quadril","Joelho","Ombro","Cotovelo"],
+correta:0,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/umero.png",
+resposta:"Cotovelo",
+palavrasChave:["cotovelo"],
+pontosPalavra:[3],
+alternativas:["Cotovelo","Joelho","Punho","Ombro"],
+correta:0,
+seta:{x:0.50, y:0.12}
+},
+
+{
+ imagem:"imgs/radio.png",
+resposta:"Punho",
+palavrasChave:["punho"],
+pontosPalavra:[3],
+alternativas:["Punho","Cotovelo","Joelho","Ombro"],
+correta:0,
+seta:{x:0.50, y:0.45}
+},
+
+{
+ imagem:"imgs/glenoumeral.png",
+resposta:"Manguito rotador",
+palavrasChave:["manguito","rotador"],
+pontosPalavra:[3,2],
+alternativas:["Manguito rotador","Deltoide","Trapézio","Peitoral"],
+correta:0,
+seta:{x:0.22, y:0.22}
+},
+{
+    pergunta: "Durante a rotação lateral do ombro com o braço aduzido, qual músculo é mais recrutado?",
+    imagem: "imgs/glenoumeral.png",
+    alternativas: ["Subescapular", "Infraespinal", "Deltoide anterior", "Peitoral maior"],
+    correta: 1,
+seta:{x:0.22, y:0.35}
+},
+{
+    pergunta: "Uma lesão do nervo axilar compromete principalmente qual movimento?",
+    imagem: "imgs/musc_sup_ant.png",
+    alternativas: ["Flexão do cotovelo", "Abdução do ombro", "Extensão do punho", "Pronação"],
+    correta: 1,
+seta:{x:0.20, y:0.08}
+},
+{
+    pergunta: "Fraturas do acetábulo frequentemente estão associadas a qual tipo de trauma?",
+    imagem: "imgs/pelve_ant.png",
+    alternativas: ["Trauma de baixa energia", "Acidente automobilístico com impacto axial", "Queda de altura leve", "Movimento repetitivo"],
+    correta: 1,
+seta:{x:0.42, y:0.58}
+},
+{
+    pergunta: "A lesão do músculo glúteo médio resulta em qual sinal clínico clássico?",
+    imagem: "imgs/musc_glut_lat.png",
+    alternativas: ["Sinal de Babinski", "Sinal de Trendelenburg", "Sinal de Tinel", "Sinal de Phalen"],
+    correta: 1,
+seta:{x:0.72, y:0.12}
+},
+{
+    pergunta: "Qual estrutura é mais frequentemente lesionada em uma entorse com valgo do joelho?",
+    imagem: "imgs/joelho_lig.png",
+    alternativas: ["LCA", "Ligamento colateral medial", "LCP", "Menisco lateral"],
+    correta: 1,
+seta:{x:0.58, y:0.46}
+},
+{
+    pergunta: "O músculo responsável pela dorsiflexão do pé é:",
+    imagem: "imgs/musc_tibial.png",
+    alternativas: ["Gastrocnêmio", "Tibial anterior", "Sóleo", "Fibular longo"],
+    correta: 1,
+seta:{x:0.42, y:0.38}
+},
+{
+    pergunta: "Fratura do colo do fêmur pode levar à necrose avascular por lesão de qual vaso?",
+    imagem: "imgs/femur.png",
+    alternativas: ["Artéria femoral profunda", "Artérias retinaculares", "Artéria obturatória", "Artéria glútea"],
+    correta: 1,
+seta:{x:0.60, y:0.17}
+},
+{
+    pergunta: "Qual músculo é o principal responsável pela extensão do joelho?",
+    imagem: "imgs/musc_inf_ant.png",
+    alternativas: ["Isquiotibiais", "Quadríceps femoral", "Sartório", "Adutor longo"],
+    correta: 1,
+seta:{x:0.40, y:0.17}
+},
+{
+    pergunta: "A lesão do nervo radial compromete principalmente qual função?",
+    imagem: "imgs/radio.png",
+    alternativas: ["Flexão do punho", "Extensão do punho", "Adução dos dedos", "Pronação"],
+    correta: 1,
+seta:{x:0.50, y:0.45}
+},
+{
+    pergunta: "O ligamento cruzado posterior impede principalmente:",
+    imagem: "imgs/joelho_lig.png",
+    alternativas: ["Deslocamento anterior da tíbia", "Deslocamento posterior da tíbia", "Rotação lateral", "Extensão"],
+    correta: 1,
+seta:{x:0.42, y:0.46}
+},
+
+{
+    pergunta: "Qual músculo participa da rotação medial do braço?",
+    imagem: "imgs/musc_inf_ant.png",
+    alternativas: ["Infraespinal", "Subescapular", "Deltoide posterior", "Trapézio"],
+    correta: 1,
+seta:{x:0.40, y:0.17}
+},
+{
+    pergunta: "Fraturas da diáfise do úmero podem lesar qual nervo?",
+    imagem: "imgs/umero.png",
+    alternativas: ["Mediano", "Radial", "Ulnar", "Axilar"],
+    correta: 1,
+seta:{x:0.50, y:0.12}
+},
+{
+    pergunta: "A função principal do músculo gastrocnêmio é:",
+    imagem: "imgs/musc_tibial.png",
+    alternativas: ["Dorsiflexão", "Flexão plantar", "Inversão", "Eversão"],
+    correta: 1,
+seta:{x:0.45, y:0.45}
+},
+{
+    pergunta: "A articulação responsável pela maior amplitude de movimento do corpo é:",
+    imagem: "imgs/glenoumeral.png",
+    alternativas: ["Joelho","Quadril","Ombro","Cotovelo"],
+    correta: 2,
+seta:{x:0.22, y:0.25}
+},
+{
+    pergunta: "A lesão do nervo ulnar causa perda de qual movimento?",
+    imagem: "imgs/ulna.png",
+    alternativas: ["Extensão do punho","Adução dos dedos","Flexão do cotovelo","Supinação"],
+    correta: 1,
+seta:{x:0.50, y:0.45}
+},
+{
+    pergunta: "Fratura de Colles ocorre em qual osso?",
+    imagem: "imgs/radio.png",
+    alternativas: ["Ulna","Rádio distal","Úmero","Escápula"],
+    correta: 1,
+seta:{x:0.50, y:0.88}
+},
+{
+    pergunta: "O músculo responsável pela flexão do cotovelo é:",
+    imagem: "imgs/musc_sup_ant.png",
+    alternativas: ["Tríceps","Bíceps","Deltoide","Ancôneo"],
+    correta: 1,
+seta:{x:0.22, y:0.10}
+},
+{
+    pergunta: "Qual estrutura estabiliza a cabeça do úmero na cavidade glenoidal?",
+    imagem: "imgs/glenoumeral.png",
+    alternativas: ["Manguito rotador","Trapézio","Peitoral","Latíssimo"],
+    correta: 0,
+seta:{x:0.22, y:0.22}
+},
+{
+    pergunta: "Fratura do calcâneo geralmente ocorre após:",
+    imagem: "imgs/pe_plantar.png",
+    alternativas: ["Torção","Queda de altura","Impacto leve","Movimento repetitivo"],
+    correta: 1,
+seta:{x:0.50, y:0.55}
+},
+{
+    pergunta: "O músculo tibial posterior atua principalmente em:",
+    imagem: "imgs/musc_tibial.png",
+    alternativas: ["Eversão","Inversão","Flexão","Extensão"],
+    correta: 1,
+seta:{x:0.35, y:0.55}
+},
+
+{
+    pergunta: "Qual músculo é responsável pela extensão da coluna lombar?",
+    imagem: "imgs/torso_post.png",
+    alternativas: ["Reto abdominal","Eretor da espinha","Oblíquo","Transverso"],
+    correta: 1,
+seta:{x:0.50, y:0.55}
+},
+{
+    pergunta: "Lesão do nervo fibular comum causa:",
+    imagem: "imgs/fibula.png",
+    alternativas: ["Pé caído","Marcha em tesoura","Hipertonia","Clônus"],
+    correta: 0,
+seta:{x:0.50, y:0.45}
+},
+{
+    pergunta: "A função do músculo peitoral maior inclui:",
+    imagem: "imgs/torso_ant.png",
+    alternativas: ["Abdução","Adução e rotação medial","Flexão do cotovelo","Extensão do joelho"],
+    correta: 1,
+seta:{x:0.35, y:0.52}
+},
+{
+    pergunta: "Fratura do úmero proximal pode comprometer qual movimento?",
+    imagem: "imgs/umero.png",
+    alternativas: ["Abdução","Extensão do joelho","Flexão plantar","Pronação"],
+    correta: 0,
+seta:{x:0.50, y:0.08}
+},
+{
+    pergunta: "A principal função do músculo trapézio superior é:",
+    imagem: "imgs/torso_post.png",
+    alternativas: ["Depressão","Elevação da escápula","Flexão","Rotação medial"],
+    correta: 1,
+seta:{x:0.50, y:0.35}
+},
+{
+    pergunta: "O ligamento responsável por limitar a hiperextensão do joelho é:",
+    imagem: "imgs/joelho_lig.png",
+    alternativas: ["LCA","LCP","Colateral medial","Colateral lateral"],
+    correta: 1,
+seta:{x:0.58, y:0.46}
+},
+{
+    pergunta: "Qual músculo auxilia na inspiração forçada?",
+    imagem: "imgs/costelas.png",
+    alternativas: ["Diafragma","Intercostais externos","Reto abdominal","Peitoral menor"],
+    correta: 1,
+seta:{x:0.50, y:0.45}
+},
+{
+    pergunta: "A articulação do tornozelo é classificada como:",
+    imagem: "imgs/tornozelo.png",
+    alternativas: ["Esferoide","Gínglimo","Plana","Selar"],
+    correta: 1,
+seta:{x:0.40, y:0.50}
+},
+{
+    pergunta: "Fratura da escápula geralmente está associada a:",
+    imagem: "imgs/escapula_ant.png",
+    alternativas: ["Trauma de alta energia","Queda leve","Uso repetitivo","Postura"],
+    correta: 0,
+seta:{x:0.50, y:0.45}
+},
+{ 
+imagem:"imgs/glenoumeral.png",
+resposta:"Manguito rotador",
+palavrasChave:["compressao","umeral","estabilidade","glenoide"],
+pontosPalavra:[3,3,2,2],
+alternativas:["Deltoide","Manguito rotador","Trapézio","Peitoral maior"],
+correta:1,
+seta:{x:0.22, y:0.22}
+},
+
+{ 
+imagem:"imgs/femur.png",
+resposta:"Artérias retinaculares",
+palavrasChave:["colo","femur","necrose","vascular"],
+pontosPalavra:[3,3,2,2],
+alternativas:["Circunflexa medial","Retinaculares","Obturatória","Glútea"],
+correta:1,
+seta:{x:0.55, y:0.10}
+},
+
+{
+ imagem:"imgs/joelho_lig.png",
+resposta:"Teste de Lachman positivo",
+palavrasChave:["lca","anterior","instabilidade","lachman"],
+pontosPalavra:[3,2,2,3],
+alternativas:["McMurray","Lachman","Apley","Drawer posterior"],
+correta:1,
+seta:{x:0.52, y:0.48}
+},
+
+{
+ imagem:"imgs/musc_glut_lat.png",
+resposta:"Queda da pelve contralateral",
+palavrasChave:["trendelenburg","pelve","apoio","instabilidade"],
+pontosPalavra:[3,2,2,2],
+alternativas:["Inclinação anterior","Queda contralateral","Hiperextensão","Rotação medial"],
+correta:1,
+seta:{x:0.72, y:0.12}
+},
+
+{
+ imagem:"imgs/glenoumeral.png",
+resposta:"Luxação anterior",
+palavrasChave:["abducao","rotacao","externa","luxacao"],
+pontosPalavra:[2,2,2,3],
+alternativas:["Posterior","Anterior","Inferior","Superior"],
+correta:1,
+seta:{x:0.22, y:0.25}
+},
+
+{
+ imagem:"imgs/musc_sup_ant.png",
+resposta:"Nervo axilar",
+palavrasChave:["deltoide","atrofia","abducao","cirurgico"],
+pontosPalavra:[2,2,2,3],
+alternativas:["Radial","Axilar","Mediano","Ulnar"],
+correta:1,
+seta:{x:0.20, y:0.08}
+},
+
+{
+ imagem:"imgs/umero.png",
+resposta:"Lesão da artéria circunflexa posterior",
+palavrasChave:["umeral","necrose","vascular","colo"],
+pontosPalavra:[2,3,2,2],
+alternativas:["Circunflexa posterior","Radial","Ulnar","Mediana"],
+correta:0,
+seta:{x:0.50, y:0.12}
+},
+
+{ 
+imagem:"imgs/musc_tibial.png",
+resposta:"Pé caído",
+palavrasChave:["fibular","dorsiflexao","deficit","marcha"],
+pontosPalavra:[3,2,2,2],
+alternativas:["Marcha em tesoura","Pé caído","Marcha atáxica","Claudicação"],
+correta:1,
+seta:{x:0.45, y:0.45}
+},
+
+{ 
+imagem:"imgs/pelve_lat.png",
+resposta:"Instabilidade do anel pélvico",
+palavrasChave:["sacro","forca","alta","trauma"],
+pontosPalavra:[3,2,2,2],
+alternativas:["Fratura simples","Instabilidade pélvica","Luxação isolada","Entorse"],
+correta:1,
+seta:{x:0.40, y:0.55}
+},
+
+{
+ imagem:"imgs/musc_sup_post.png",
+resposta:"Perda da extensão do cotovelo",
+palavrasChave:["triceps","radial","extensao","deficit"],
+pontosPalavra:[2,3,2,2],
+alternativas:["Flexão","Extensão","Pronação","Supinação"],
+correta:1,
+seta:{x:0.50, y:0.48}
+}
+
 ];
 
 let modoAtual = '';
@@ -385,7 +953,64 @@ function carregarQuestao() {
     const questao = questoes[questaoAtual];
     
     document.getElementById('questao-numero').innerText = `Questão ${questaoAtual + 1}/${questoes.length}`;
-    document.getElementById('imagem').src = questao.imagem;
+    const canvas = document.getElementById('canvas-img');
+const ctx = canvas.getContext('2d');
+
+// Clear canvas
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+const imgEl = new Image();
+imgEl.onload = function() {
+    // Size canvas to fit container (max 340px tall)
+    const maxH = 340, maxW = canvas.parentElement.clientWidth || 400;
+    const scale = Math.min(maxW / imgEl.width, maxH / imgEl.height);
+    canvas.width  = imgEl.width  * scale;
+    canvas.height = imgEl.height * scale;
+
+    ctx.drawImage(imgEl, 0, 0, canvas.width, canvas.height);
+
+    // Draw arrow if seta defined
+    if (questao.seta) {
+        const tx = questao.seta.x * canvas.width;
+        const ty = questao.seta.y * canvas.height;
+        // Arrow comes from offset
+        const dx = tx > canvas.width * 0.5 ? -60 : 60;
+        const dy = ty > canvas.height * 0.5 ? -50 : 50;
+        const sx = tx + dx;
+        const sy = ty + dy;
+
+        ctx.save();
+        ctx.strokeStyle = '#ff2222';
+        ctx.fillStyle   = '#ff2222';
+        ctx.lineWidth   = Math.max(3, canvas.width * 0.012);
+        ctx.lineCap     = 'round';
+
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(tx, ty);
+        ctx.stroke();
+
+        // Arrowhead
+        const angle = Math.atan2(ty - sy, tx - sx);
+        const headLen = Math.max(14, canvas.width * 0.045);
+        ctx.beginPath();
+        ctx.moveTo(tx, ty);
+        ctx.lineTo(tx - headLen * Math.cos(angle - 0.4), ty - headLen * Math.sin(angle - 0.4));
+        ctx.lineTo(tx - headLen * Math.cos(angle + 0.4), ty - headLen * Math.sin(angle + 0.4));
+        ctx.closePath();
+        ctx.fill();
+
+        // Circle highlight at tip
+        ctx.beginPath();
+        ctx.arc(tx, ty, Math.max(6, canvas.width * 0.018), 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,34,34,0.35)';
+        ctx.fill();
+
+        ctx.restore();
+    }
+};
+imgEl.src = questao.imagem;
     document.getElementById('feedback').innerHTML = '';
     document.getElementById('feedback').className = '';
     document.getElementById('btn-proxima').classList.add('hidden');
